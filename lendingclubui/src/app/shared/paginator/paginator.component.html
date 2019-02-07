@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-sm-12">
+        <select class="limit-selection" [(ngModel)]="limit" (change)="limitChange($event)" >
+          <option *ngFor="let l of limits" [value]="l">{{l}}</option>
+        </select>
+        <span title="First" [ngClass]="{'disable-nav': currentPage == 1 }"  (click)="first()" ><i class="fa fa-backward"></i></span>
+        <span title="Back"  [ngClass]="{'disable-nav': currentPage == 1 }" (click)="back()"><i class="fa fa-caret-left"></i></span>
+        <span>{{currentPage}}</span>
+        <span title="Next" (click)="next()" [ngClass]="{'disable-nav': currentPage == lastPage }"><i class="fa fa-caret-right"></i></span>
+        <span title="Last" (click)="last()" [ngClass]="{'disable-nav': currentPage == lastPage }"><i class="fa fa-forward"></i></span>
+        
+    </div>
+
+</div>

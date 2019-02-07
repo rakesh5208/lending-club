@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="col-sm-12 breadcrumb text-info">
+        <span class="col-sm-6"> Members List</span>
+  </div>
+  <div class="col-sm-12 text-right">
+      <span class="ui-clickable btn btn-border" (click)="filterState = 'open'">
+        <i class="fa fa-filter">&nbsp;</i>Select Filter</span>
+      <app-filter-box [filterOptions]="filterOptions" [(filterState)]="filterState" (apply)="onApply($event)"></app-filter-box>
+  </div>
+  <div class="col-sm-12">
+      <app-loader [loading]="loading"></app-loader>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <ng-container *ngFor="let col of cols">
+            <th (click)="sort(col.key)" class="ui-clickable" *ngIf="col.sortable">
+              <i class="fa" [ngClass]="getSortIcon(col.key)">&nbsp;<span>{{col.label}}</span></i>
+            </th>
+            <th *ngIf="!col.sortable">
+              {{col.label}}
+            </th>
+          </ng-container>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let member of members">
+          <td>{{member.id}}</td>
+          <td>{{member.loadAmnt}}</td>
+          <td>{{member.loadStatus}}</td>
+          <td>{{member.lastPymntDate}}</td>
+          <td>{{member.lastPymntAmnt}}</td>
+          <td>
+            <a [routerLink]="[member.id]"><i class="fa fa-pencil">&nbsp;</i>View Details</a>
+          </td>
+        </tr>
+        <tr *ngIf="members.length == 0">
+          <td [attr.colspan]="cols.length + 1" class="text-center">
+            No Data Available
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-12">
+    <app-paginator [currentPage]="currentPage" [totalRecords]="totalRecords" (change)="onPageChange($event)"></app-paginator>
+  </div>
+</div>

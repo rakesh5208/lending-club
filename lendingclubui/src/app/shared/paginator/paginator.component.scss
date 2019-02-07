@@ -1,0 +1,29 @@
+span{
+    cursor: pointer;
+    border: 1px solid #2196F3;
+    padding: 3px 10px;
+    margin-right: 5px;
+    border-radius: 3px;
+    color:#2196F3;
+    font-size: 18px;
+}
+span:hover{
+    color: white;
+    background: #2196F3;
+}
+.disable-nav{
+    color:#9a9a9a;
+    cursor: not-allowed;
+    border:1px solid #9a9a9a;
+}
+.disable-nav:hover{
+    color:#9a9a9a;
+    background:#fff;
+}
+
+.limit-selection{
+    background: white;
+    padding: 3px 10px;
+    margin-right: 10px;
+    border-radius: 3px;
+}

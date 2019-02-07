@@ -1,0 +1,104 @@
+<div class="row">
+  <div class="col-sm-12 breadcrumb text-info">
+    <span class="ui-clickable" routerLink="/members"> Members</span>
+    <span class="text-black-50">&nbsp;/&nbsp;{{id}}</span>
+  </div>
+
+  <div class="col-sm-12 member-deatils-info" *ngIf="member">
+    <div class="row">
+      <div class="col-sm-4 max-wide-4x info-card">
+        <h3> Member Info</h3>
+        <p class="info-row">
+          <span>Id:</span>
+          <label>{{member.id || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Verification Status:</span>
+          <label>{{member.verificationStatus || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Employee Title:</span>
+          <label>{{member.empTitle || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Address State:</span>
+          <label>{{member.addrState || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Home Ownership:</span>
+          <label>{{member.homeOwnership || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Grade:</span>
+          <label>{{member.grade || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Annual Increment:</span>
+          <label> 
+            <i class="fa fa-arrow-up text-success"></i>
+            {{member.annualInc || 'N/A'}}
+          </label>
+        </p>
+        <p class="info-row">
+          <span>Employeement Length:</span>
+          <label>{{member.empLength || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Funded Amount Invested:</span>
+          <label><i class="fa fa-dollar">&nbsp;</i>{{member.fundedAmntInv || 'N/A'}}</label>
+        </p>
+      </div>
+      <div class="info-card max-wide-4x col-sm-4">
+        <h3> Loan Info</h3>
+        <p class="info-row">
+          <span>Loan Status:</span>
+          <label>{{member.loadStatus || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Last Payment Amount:</span>
+          <label><i class="fa fa-dollar">&nbsp;</i>{{member.lastPymntAmnt || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Last Payment Date:</span>
+          <label>{{member.lastPymntDate || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Title:</span>
+          <label>{{member.title || 'N/A'}}</label>
+        </p>
+
+        <p class="info-row">
+          <span>Loan Amount:</span>
+          <label><i class="fa fa-dollar">&nbsp;</i>{{member.loadAmnt || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Issued Date:</span>
+          <label>{{member.issueDate || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Term:</span>
+          <label>{{member.term || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Interest Rate:</span>
+          <label>{{member.intRate || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Installment:</span>
+          <label><i class="fa fa-dollar">&nbsp;</i>{{member.installment || 'N/A'}}</label>
+        </p>
+        <p class="info-row">
+          <span>Purpose:</span>
+          <label>{{member.purpose || 'N/A' }}</label>
+        </p>
+      </div>
+      <div class="col-sm-12 info-card">
+        <h3> Descripiton: </h3>
+        <label *ngIf="member.description !== '';else naDesc" [innerHtml]="member.description"></label>
+        <ng-template #naDesc>
+          <label>N/A</label>
+        </ng-template>
+        </div>
+    </div>
+  </div>
+</div>

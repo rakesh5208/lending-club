@@ -1,0 +1,33 @@
+.info-row
+{    
+    margin-top: 0;
+    margin-bottom: 1px;
+    border-top: 1px solid #d3d3d3;
+}
+.max-wide-4x{
+    max-width: 400px;
+}
+
+.member-deatils-info{
+    margin:12px 0px;
+    & span{
+        font-weight: 400;
+        font-size: 13px;
+        display: inline-block;
+        width:50%;
+    }
+    & label{
+        font-weight: 500;
+        font-size: 14px
+    }
+}
+.info-card{
+    margin:10px 10px;
+    padding:10px;
+    border: 1px solid #d3d3d3;
+    border-radius: 4px;
+    & h3{
+        font-size: 22px
+    }
+}
+

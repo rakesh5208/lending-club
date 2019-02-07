@@ -1,0 +1,29 @@
+<div [@openClose]="filterState" class="filter-box-container">
+  <ng-container *ngIf="filterState === 'open'">
+    <div class="col-sm-12 text-right">
+      <span class="fa fa-times ui-clickable" (click)="close()"></span>
+    </div>
+    <div class="filter-flex-container">
+      <div class="filter-flex-item" *ngFor="let fo of filterOptions">
+          <header>{{fo.label}}</header>
+          <ul>
+            <li *ngFor="let option of fo.options" 
+              class="ui-clickable" 
+              (click)="option.selected = !option.selected"
+              [ngStyle]="{'font-weight': option.selected ? '550' : '400'}">
+              <i class="fa fa-fw" [ngClass]="option.selected ? 'fa-check-square text-primary' : 'fa-square-o'"></i>&nbsp;{{option.label}}
+            </li>
+          </ul>
+      </div>
+
+    </div>
+    <div class="col-sm-12 text-right" >
+      <a class="btn btn-border " (click)="emitSelection()">
+        <i class="fa fa-check">&nbsp;</i>Apply
+      </a>
+      <a class="btn btn-border " (click)="reset()">
+          <i class="fa fa-remove">&nbsp;</i>Reset
+        </a>
+    </div>
+  </ng-container>
+</div>
