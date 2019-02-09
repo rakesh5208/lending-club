@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-12 breadcrumb text-info">
+  <div class="col-sm-12 breadcrumb text-info sticky-header">
     <span class="ui-clickable" routerLink="/members"> Members</span>
     <span class="text-black-50">&nbsp;/&nbsp;{{id}}</span>
   </div>
@@ -94,7 +94,7 @@
       </div>
       <div class="col-sm-12 info-card">
         <h3> Descripiton: </h3>
-        <label *ngIf="member.description !== '';else naDesc" [innerHtml]="member.description"></label>
+        <label style="width:100%;" *ngIf="member.description !== '';else naDesc" [innerHtml]="member.description"></label>
         <ng-template #naDesc>
           <label>N/A</label>
         </ng-template>

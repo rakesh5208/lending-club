@@ -2,13 +2,14 @@
   <div class="col-sm-12 breadcrumb text-info">
         <span class="col-sm-6"> Members List</span>
   </div>
-  <div class="col-sm-12 text-right">
+  <div class="col-sm-12 text-right filter-bar sticky-header">
+      <span class="badge badge-success">{{selectedFilters.length > 0 ? 'Filter is Enabled' : ''}}</span>
       <span class="ui-clickable btn btn-border" (click)="filterState = 'open'">
-        <i class="fa fa-filter">&nbsp;</i>Select Filter</span>
+        
+        <i class="fa fa-filter">&nbsp;</i>{{selectedFilters.length > 0 ? 'Edit Filter' : 'Select Filter'}} </span>
       <app-filter-box [filterOptions]="filterOptions" [(filterState)]="filterState" (apply)="onApply($event)"></app-filter-box>
   </div>
   <div class="col-sm-12">
-      <app-loader [loading]="loading"></app-loader>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -43,6 +44,6 @@
     </table>
   </div>
   <div class="col-sm-12">
-    <app-paginator [currentPage]="currentPage" [totalRecords]="totalRecords" (change)="onPageChange($event)"></app-paginator>
+    <app-paginator [currentPage]="paginationState.currentPage" [limit]="paginationState.limit" [totalRecords]="totalRecords" (change)="onPageChange($event)"></app-paginator>
   </div>
 </div>

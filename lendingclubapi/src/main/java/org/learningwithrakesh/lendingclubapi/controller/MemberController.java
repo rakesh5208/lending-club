@@ -3,6 +3,7 @@ package org.learningwithrakesh.lendingclubapi.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.learningwithrakesh.lendingclubapi.dto.FilterColumn;
 import org.learningwithrakesh.lendingclubapi.dto.MemberPaginator;
 import org.learningwithrakesh.lendingclubapi.entity.Member;
 import org.learningwithrakesh.lendingclubapi.service.MemberService;
@@ -22,19 +23,36 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	@ResponseBody
-	public MemberPaginator getAll(@RequestParam("currentPage") int currentPage, @RequestParam("recordSize") int recordSize)
-			throws Exception {
-		if (currentPage <= 0 || currentPage <= 0)
-			throw new Exception("PageSize or recordSize must be greater than zero");
-		return this.memberService.getAllPaginator(--currentPage, recordSize);
-	}
-
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	public Member getMember(@PathVariable("id") long memberId) {
 		return this.memberService.getById(memberId);
 	}
 
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	public MemberPaginator gePaginatedMember(@RequestParam(value = "q", required = false) String query,
+			@RequestParam("currentPage") int currentPage, @RequestParam("recordSize") int recordSize,
+			@RequestParam(value = "home_ownership", required = false) String homeOwnership,
+			@RequestParam(value = "verification_status", required = false) String verificationStatus,
+			@RequestParam(value = "loan_status", required = false) String loanStatus,
+			@RequestParam(value = "grade", required = false) String grade) throws Exception {
+		if (currentPage <= 0 || currentPage <= 0)
+			throw new Exception("PageSize or recordSize must be greater than zero");
+		List<FilterColumn> filterColumns = new ArrayList<>();
+		if (homeOwnership != null) {
+			filterColumns.add(new FilterColumn("homeOwnership", homeOwnership));
+		}
+		if (verificationStatus != null) {
+			filterColumns.add(new FilterColumn("verificationStatus", verificationStatus));
+		}
+		if (loanStatus != null) {
+			filterColumns.add(new FilterColumn("loadStatus", loanStatus));
+		}
+		if (grade != null) {
+			filterColumns.add(new FilterColumn("grade", grade));
+		}
+		return this.memberService.getPaginatedMembers(query,--currentPage, recordSize,
+				filterColumns.toArray(new FilterColumn[filterColumns.size()]));
+	}
 }

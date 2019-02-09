@@ -23,7 +23,7 @@ export class PaginatorComponent implements OnInit {
   set totalRecords(totalRecords){
     this._totalRecords = totalRecords;
     this.lastPage = this.getLastPageCount();
-    this.updatePaginator();
+    // this.updatePaginator();
   }
   constructor() { }
 

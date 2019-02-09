@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { distinctUntilChanged, debounceTime, takeWhile } from 'rxjs/operators';
 @Component({
   selector: 'app-serach-box',
   template: `<div class="search-box" > 
-                <input class="form-control" placeholder="Serach here !!" type="text" />
+                <input class="form-control" placeholder="Serach here !!" type="text" (keyup)="_subject.next($event.target.value)" />
                 <i class="fa fa-search"></i>
               </div>`,
   styles: [
@@ -21,14 +23,27 @@ import { Component, OnInit } from '@angular/core';
      }`
   ]
 })
-export class SerachBoxComponent implements OnInit {
+export class SerachBoxComponent implements OnInit , OnDestroy{
 
-  constructor() { }
-  searchBoxState='close'
+  
+  searchBoxState='close';
+  searchText = '';
+  @Output() enter = new EventEmitter();
+  _subject = new Subject();
+  alive = true;
+  constructor() {
+    this._subject.pipe(takeWhile( ()=>this.alive),distinctUntilChanged(),debounceTime(500)).subscribe(text=>{
+      this.enter.emit(text);
+    })
+   }
+
   ngOnInit() {
     
   }
 
+  ngOnDestroy(){
+    this.alive = false;
+  }
 }
 
 

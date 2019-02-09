@@ -29,7 +29,8 @@ public class Member {
 
 	private double installment;
 
-	private char grade;
+	@Column(length=1)
+	private String grade;
 
 	@Column(name = "emp_title")
 	private String empTitle;
@@ -120,11 +121,11 @@ public class Member {
 		this.installment = installment;
 	}
 
-	public char getGrade() {
+	public String getGrade() {
 		return grade;
 	}
 
-	public void setGrade(char grade) {
+	public void setGrade(String grade) {
 		this.grade = grade;
 	}
 

@@ -18,3 +18,9 @@
     border: 1px solid #d3d3d3 !important;
     margin: 5px 0px;
 }
+
+.sticky-header{
+    position: sticky !important;
+    top: 77px;
+    z-index: 1;
+}

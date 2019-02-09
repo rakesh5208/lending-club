@@ -1,12 +1,13 @@
 
 <div>
   <app-notify></app-notify>
+  <app-loader [loading]="loading"></app-loader>
   <div class="top-header">
     <div class="banner">
-      <h3><i class="fa fa-dollar fa-2x">&nbsp;</i>Leanding Club</h3>
+      <h3><i class="fa fa-dollar fa-2x">&nbsp;</i>Lending Club</h3>
     </div>
     <div class="right-div text-right">
-      <app-serach-box class="col-sm-6 text-right ui-clickable"></app-serach-box>
+      <app-serach-box class="col-sm-6 text-right " (enter)="search($event)"></app-serach-box>
     </div>
   </div>
   <div class="container">

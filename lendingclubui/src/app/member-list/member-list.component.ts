@@ -1,25 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MemberService } from '../member.service';
 import { Member } from '../member';
+import { UiStateService } from '../services/ui-state.service';
+import { combineLatest } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeWhile, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-member-list',
   templateUrl: './member-list.component.html',
   styleUrls: ['./member-list.component.scss']
 })
-export class MemberListComponent implements OnInit {
+export class MemberListComponent implements OnInit, OnDestroy {
 
 
-  cols = [{ label: '#id', key: 'id', type: 'number', sortable: true },
-  { label: 'Loan Amount', key: 'loadAmnt', type: 'number', sortable: true },
-  { label: 'Loan Status', key: 'loadStatus', sortable: true },
-  { label: 'Last Payment Date', key: 'lastPymntDate', sortable: true },
-  { label: 'Last Payment Amount', key: 'lastPymntAmnt', type: 'number', sortable: true }];
+  cols = [{ label: '#id', key: 'id', type: 'number', sortable: false },
+  { label: 'Loan Amount', key: 'loadAmnt', type: 'number', sortable: false },
+  { label: 'Loan Status', key: 'loadStatus', sortable: false },
+  { label: 'Last Payment Date', key: 'lastPymntDate', sortable: false },
+  { label: 'Last Payment Amount', key: 'lastPymntAmnt', type: 'number', sortable: false }];
 
   sortableMeta = [];
   members: Member[] = [];
-  totalRecords = 0;
-  currentPage = 1;
   filterOptions = [{
     key: 'home_ownership',
     label: 'Home Ownership',
@@ -47,24 +49,43 @@ export class MemberListComponent implements OnInit {
       { label: 'In Grace Period', value: 'In Grace Period' },
       { label: 'Fully Paid', value: 'Fully Paid' },
       { label: 'Default', value: 'Default' },
-      { label: 'Current', value: 'Charged Off' }
+      { label: 'Charged Off', value: 'Charged Off' }
     ]
   }
   ];
-  loading = false;
-  constructor(private memberService: MemberService) {
+  /**
+   * paginator config
+   */
+  totalRecords = 0;
+  paginationState = { currentPage: 0, limit: 0 }
+  /**
+   * selected filters
+   */
+  selectedFilters = [];
+  subscriberLive = true;
+  searchTerm = '';
+  constructor(private memberService: MemberService, private uiState: UiStateService) {
     this.filterOptions.push(this.initGradeFilter());
+
+
+    combineLatest(this.uiState.paginateState$, this.uiState.selectedFilters,this.uiState.searchTerm$)
+    .pipe(takeWhile(()=>this.subscriberLive))
+    .subscribe(([paginate, selectedFilter,searchTerm]) => {
+      this.paginationState = paginate;
+      this.selectedFilters = selectedFilter;
+      this.searchTerm = searchTerm;
+      this.getMembers();
+    });
+    
   }
 
   ngOnInit() {
-    this.getMembers(this.currentPage, 10);
+
   }
 
   onPageChange($event) {
     if ($event) {
-      const { currentPage, limit } = $event;
-      this.getMembers(currentPage,limit);
-      
+      this.uiState.updatePaginatedState($event);
     }
   }
   /**
@@ -96,18 +117,23 @@ export class MemberListComponent implements OnInit {
   }
 
   onApply(event) {
-    this.loading = true;
-    setTimeout(()=>this.loading = false, 3000);
+    this.uiState.updatePaginatedState({ currentPage: 1, limit: this.paginationState.limit });
+    this.uiState.updateSelectedFilter(event);
   }
 
-  getMembers(currentPage,limit){
-    this.loading = true;
-    this.memberService.getMembers(currentPage, limit).subscribe(paginatedMembers => {
+  getMembers() {
+    const { currentPage, limit } = this.paginationState;
+    this.uiState.updateLoaderState(true);
+    this.memberService.getMembers(currentPage, limit, this.selectedFilters,this.searchTerm).subscribe(paginatedMembers => {
       if (paginatedMembers) {
         this.totalRecords = paginatedMembers.totalRecords;
         this.members = paginatedMembers.contents;
       }
-      setTimeout(()=> this.loading = false,1);
-    });    
+      this.uiState.updateLoaderState(false);
+    });
+  }
+
+  ngOnDestroy(){
+    this.subscriberLive = false;
   }
 }
